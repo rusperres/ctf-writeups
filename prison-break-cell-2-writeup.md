@@ -56,6 +56,7 @@ The breakthrough came from this obfuscated one-liner:
 
 `getattr(globals()[chr(111)+chr(115)], chr(115)+chr(121)+chr(115)+chr(116)+chr(101)+chr(109))(chr(99)+chr(97)+chr(116)+chr(32)+chr(102)+chr(108)+chr(97)+chr(103)+chr(46)+chr(116)+chr(120)+chr(116))
 `
+
 This decodes to:
 
 `getattr(os, "system")("cat flag.txt")`
