@@ -11,6 +11,7 @@ Challenge Overview
 The server accepts arbitrary Python input, but blacklists certain keywords before executing the payload via os.execv. The main idea is to execute arbitrary Python code within a restricted environment, i.e., a PyJail.
 
 jail.py:
+
 import os
 import sys
 
