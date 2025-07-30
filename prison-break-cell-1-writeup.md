@@ -12,6 +12,8 @@ The server accepts arbitrary Python input, but blacklists certain keywords befor
 
 jail.py:
 
+```python
+
 import os
 import sys
 
@@ -32,6 +34,8 @@ code = f"""
 """.strip()
 
 os.execv(sys.executable, [sys.executable, "-c", code])
+```
+
 
 Blacklist & Execution
 Blacklisted substrings: "os", "import", "flag", "system"
