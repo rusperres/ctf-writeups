@@ -10,7 +10,7 @@ nc 192.168.8.136 10014
 Challenge Overview
 The server accepts arbitrary Python input, but blacklists certain keywords before executing the payload via os.execv. The main idea is to execute arbitrary Python code within a restricted environment, i.e., a PyJail.
 
-``python
+python
 jail.py:
 import os
 import sys
@@ -32,7 +32,7 @@ code = f"""
 """.strip()
 
 os.execv(sys.executable, [sys.executable, "-c", code])
-``
+
 Blacklist & Execution
 Blacklisted substrings: "os", "import", "flag", "system"
 
