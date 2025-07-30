@@ -44,7 +44,7 @@ Blacklisted substrings: ```"os", "import", "flag", "system"</span>```
 The input is injected into a dynamically constructed string and executed via `netcat`
 
 
-Any input containing blacklisted substrings gets rejected. Substring matching is used (if tool in hax), not full-word matching or regex. This makes it possible for "__import__" or even "syst" + "em" to be blocked, since "import" and "system" are substrings of those.
+Any input containing blacklisted substrings gets rejected. Substring matching is used (if tool in hax), not full-word matching or regex. This makes it possible for `"__import__"` or even "syst" + "em" to be blocked, since "import" and "system" are substrings of those.
 
 
 ## Exploitation Strategy
