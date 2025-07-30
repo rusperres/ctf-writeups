@@ -38,7 +38,7 @@ os.execv(sys.executable, [sys.executable, "-c", code])
 
 
 Blacklist & Execution
-Blacklisted substrings: "os", "import", "flag", "system"
+Blacklisted substrings: `"os", "import", "flag", "system"`
 
 
 The input is injected into a dynamically constructed string and executed via:
