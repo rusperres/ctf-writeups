@@ -1,31 +1,68 @@
-Ths programs starts with this:<br>
-<img width="390" height="126" alt="image" src="https://github.com/user-attachments/assets/9c7fda56-b5d9-4e20-b52e-2af002de81ae" />
-<br>
+# Unsubscriptions Are Free
+
+Ths programs starts with this:<br><br>
+```
+Welcome to my stream! ^W^
+==========================
+(S)ubscribe to my channel
+(I)nquire about account deletion
+(M)ake an Twixer account
+(P)ay for premium membership
+(l)eave a message(with or without logging in)
+(e)xit
+```
 Subscribing to the channel will result in a memory leak:<br>
-<img width="337" height="29" alt="image" src="https://github.com/user-attachments/assets/607fdb73-7819-4abd-8a71-dbcc049e282c" />
+
+```
+Welcome to my stream! ^W^
+==========================
+(S)ubscribe to my channel
+(I)nquire about account deletion
+(M)ake an Twixer account
+(P)ay for premium membership
+(l)eave a message(with or without logging in)
+(e)xit
+s
+OOP! Memory leak...0x401965
+```
 <br>
 From the function below, it can be seen that leaked memory address is for the function hahaexploitgobrrr()
-<img width="892" height="99" alt="image" src="https://github.com/user-attachments/assets/7c984be9-a452-4da2-9762-068dd7571692" />
-This function contains the flag:<br>
-<img width="418" height="229" alt="image" src="https://github.com/user-attachments/assets/df940c75-90a1-4932-bfe0-17f463542c08" />
-<br>
+
+```c
+void s(){
+ 	printf("OOP! Memory leak...%p\n",hahaexploitgobrrr);
+ 	puts("Thanks for subsribing! I really recommend becoming a premium member!");
+}
+```
+This function contains the flag:
+
+```c
+void hahaexploitgobrrr(){
+ 	char buf[FLAG_BUFFER];
+ 	FILE *f = fopen("flag.txt","r");
+ 	fgets(buf,FLAG_BUFFER,f);
+ 	fprintf(stdout,"%s\n",buf);
+ 	fflush(stdout);
+}
+```
 The function below shows that function that inputs the username
 <br>
 
-    char * getsline(void) {
-    	getchar();
-    	char * line = malloc(100), * linep = line;
-    	size_t lenmax = 100, len = lenmax;
-    	int c;
-    	if(line == NULL)
-    		return NULL;
-    	for(;;) {
-    		c = fgetc(stdin);
-    		if(c == EOF)
-    			break;
-    		if(--len == 0) {
-    			len = lenmax;
-    			char * linen = realloc(linep, lenmax *= 2);
+```c
+char * getsline(void) {
+	getchar();
+	char * line = malloc(100), * linep = line;
+	size_t lenmax = 100, len = lenmax;
+	int c;
+	if(line == NULL)
+		return NULL;
+	for(;;) {
+		c = fgetc(stdin);
+		if(c == EOF)
+			break;
+		if(--len == 0) {
+			len = lenmax;
+			char * linen = realloc(linep, lenmax *= 2);
 
 			if(linen == NULL) {
 				free(linep);
@@ -40,27 +77,103 @@ The function below shows that function that inputs the username
 	}
 	*line = '\0';
 	return linep;
-    }
+}
+```
 <br>
 It shows that the function stores the username dynamically.
 <br>
 The function below handles the deletion of an account
 <br>
-<img width="597" height="339" alt="image" src="https://github.com/user-attachments/assets/059ef2f1-a27c-4ee4-930a-812ff5b0c2d8" />
+
+```c
+void i(){
+	char response;
+  	puts("You're leaving already(Y/N)?");
+	scanf(" %c", &response);
+	if(toupper(response)=='Y'){
+		puts("Bye!");
+		free(user);
+	}else{
+		puts("Ok. Get premium membership please!");
+	}
+}
+```
 <br>
 As can be seen from the function above, the function frees the dynamically allocated memory from the heap. This is a potential vulnerability that can be used later on.
 <br>
 The function below is the function for leaving messages. Take note that it also stores text dynamically
 <br>
-<img width="673" height="189" alt="image" src="https://github.com/user-attachments/assets/eef5b605-5516-46d2-90ad-b0e970bfc18a" />
+
+```c
+void leaveMessage(){
+	puts("I only read premium member messages but you can ");
+	puts("try anyways:");
+	char* msg = (char*)malloc(8);
+	read(0, msg, 8);
+}
+```
 <br>
-<b>Thought Process</b>
-When we attempt to leave a message without creating an account, it results in segmentation error
+
+## Thought Process
+When we attempt to leave a message without creating an account, it results in segmentation error. <br>
 <br>
-<img width="405" height="212" alt="image" src="https://github.com/user-attachments/assets/339ad738-0033-4718-961f-2de461b8426c" />
+
+```
+Welcome to my stream! ^W^
+==========================
+(S)ubscribe to my channel
+(I)nquire about account deletion
+(M)ake an Twixer account
+(P)ay for premium membership
+(l)eave a message(with or without logging in)
+(e)xit
+l
+I only read premium member messages but you can 
+try anyways:
+AAA
+zsh: segmentation fault  ./chal3
+```
 <br>
 However, GDB can be used to inspect the segmentation error.<br>
-<img width="942" height="599" alt="image" src="https://github.com/user-attachments/assets/891ee37c-7f95-4404-afa7-595d3c6a23b9" />
+
+```
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x00007fffffffddf8  →  0x00007fffffffe194  →  "COLORFGBG=15;0"
+$rcx   : 0x000000000042d2bd  →  0x5b77fffff0003d48 ("H="?)
+$rdx   : 0x0               
+$rsp   : 0x00007fffffffdbf8  →  0x0000000000401aeb  →  <doProcess+001a> nop 
+$rbp   : 0x00007fffffffdc10  →  0x00007fffffffdc20  →  0x0000000000000001
+$rsi   : 0x00000000004c5c00  →  0x000000000a414141 ("AAA\n"?)
+$rdi   : 0x00000000004c57d0  →  0x0000000000000000
+$rip   : 0x0               
+$r8    : 0x0               
+$r9    : 0x00000000004bc500  →  <_IO_2_1_stdin_+0000> mov BYTE PTR [rdx], ah
+$r10   : 0x00000000004be091  →   add BYTE PTR [rax], al
+$r11   : 0x246             
+$r12   : 0x00007fffffffdde8  →  0x00007fffffffe179  →  "/home/john/Downloads/chal3"
+$r13   : 0x00000000004b8de8  →  0x0000000000401930  →  <frame_dummy+0000> endbr64 
+$r14   : 0x1               
+$r15   : 0x1               
+$eflags: [zero carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdbf8│+0x0000: 0x0000000000401aeb  →  <doProcess+001a> nop          ← $rsp
+0x00007fffffffdc00│+0x0008: 0x00000000004b8de8  →  0x0000000000401930  →  <frame_dummy+0000> endbr64 
+0x00007fffffffdc08│+0x0010: 0x00000000004c57d0  →  0x0000000000000000
+0x00007fffffffdc10│+0x0018: 0x00007fffffffdc20  →  0x0000000000000001    ← $rbp
+0x00007fffffffdc18│+0x0020: 0x0000000000401e38  →  <main+004c> jmp 0x401e15 <main+41>
+0x00007fffffffdc20│+0x0028: 0x0000000000000001
+0x00007fffffffdc28│+0x0030: 0x00000000004022f4  →  <__libc_start_call_main+0064> mov edi, eax
+0x00007fffffffdc30│+0x0038: 0x0000000000401100  →  <_IO_fflush.cold+0000> test DWORD PTR [rbx], 0x8000
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+[!] Cannot disassemble from $PC
+[!] Cannot access memory at address 0x0
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "chal3", stopped 0x0 in ?? (), reason: SIGSEGV
+
+```
 <br>
 Nothing note worthy. However, freeing a dynamically allocated memory results in a vulnerabiliy, therefore an attempt to create an account and then freeing the account 
 must be inspected.
