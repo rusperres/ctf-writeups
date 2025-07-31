@@ -8,7 +8,7 @@ Find the flag.
 ## Challenge Overview
 We were given a site that contains the flag but we don't know where.
 
-My first approach to finding the flag was to inspect the site and crawl through its file.
+My first approach to finding the flag was to inspect the site and crawl through its source.
 
 ```html
 <!DOCTYPE html>
