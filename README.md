@@ -1,9 +1,6 @@
 The challenge starts with this menu:
 <br>
-              Menu:
-              1. Flag
-              2. Command prompt
-              Choose an option:
+<img width="159" height="67" alt="image" src="https://github.com/user-attachments/assets/53f481c6-3340-4b5b-b8c2-9d7ded4fc46b" />
 <br>
 Upon inspection of the source code, the following function can be found:
 <br>
