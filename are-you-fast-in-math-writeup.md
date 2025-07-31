@@ -7,13 +7,13 @@ Objective:
 Beat a timed arithmetic quiz with nc to print the flag.
 
 ## Challenge Overview
-We're given a problem from the server and expects the correct answer in less than 3 seconds.Each math problem looks like.
+We're given a problem from the server and expects the correct answer in less than 3 seconds. Each math problem looks like this:
 
 ```python
 A op B = ?
 ```
 
-My first approach was to solve it fast using a calculator. But it after knowing that it is not only a few items. I quickly came up with the idea to just use a script to answer them for me.
+My first approach was to solve it fast using a calculator. But after knowing that it was more than 3 problems, I quickly came up with the idea to just use a script to answer them for me.
 
 So I searched the web for ctfs similar to this one and found a script that solves it for me. However, one of the problems I've encountered was parsing the expresion.
 
@@ -46,22 +46,17 @@ if __name__ == '__main__':
     while True:
         data = b''
  
-        # receive and store data
         while True:
             chunk = client.recv(MAXBUF)
             data += chunk
             if len(chunk) < MAXBUF:
                 break
        
-        # store decoded data for future usage
+        
         decoded = data.decode('utf-8')
        
-        #temporary
-      
-        #
- 
-        # our flag likely contains flag{}, once it's revealed print received data and exit
-        if SENTINEL in decoded:
+   
+               if SENTINEL in decoded:
             print(decoded)
             break
        
@@ -93,10 +88,10 @@ if __name__ == '__main__':
         else:
             result = eval(expression)
  
-        # print results to screen to see script progress
+    
         print(expression + ' = ' + str(result))
  
-        # encode and transfer
+    
         data = str(result).encode('utf-8') + b'\n'
         print('Sending: ' + str(result))
         client.send(data)
