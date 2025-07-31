@@ -1,6 +1,8 @@
 # PRISON BREAK Cell 2 – 350 pts
 Category: PyJail
 
+Solver: CyberSikyu
+
 To connect:
 `nc 192.168.8.136 10015`
 
