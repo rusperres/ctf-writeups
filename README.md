@@ -59,7 +59,7 @@ It can be seen above that the exploitable function vuln() can be called by choos
     2. Command prompt
     Choose an option: 2
     Input: AAAAAAAAAAAAAAAAA
-    CITU{CWE_416_USE_AFTER_FREE}
+    CITU{ur_1rst_Pwn}
 
 
 <br>
