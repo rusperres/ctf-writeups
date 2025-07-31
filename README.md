@@ -13,6 +13,7 @@ Additionally, the following function can be seen in the source code:
 <br>
 Because there is a limited size in the buffer, only 16, we can create a segmentation error by creating a buffer overflow. Logically, the buffer will overflow after inputting 17 characters.
 <img width="915" height="470" alt="image" src="https://github.com/user-attachments/assets/b41d7a1d-6751-4616-88b1-1ebcea20cafd" />
+<br>
 It can be seen above that the exploitable function vuln() can be called by choosing option 2
 <br>
 <img width="234" height="106" alt="image" src="https://github.com/user-attachments/assets/b6e09507-d32c-4b77-b6e1-f9d602e91ff0" />
