@@ -1,10 +1,29 @@
-The challenge starts with this in the terminal:<br>
-<img width="739" height="35" alt="image" src="https://github.com/user-attachments/assets/efada306-99e3-46da-93f8-6e34f35eb764" />
+# Katipwnan Buffer Bomber
+
+The challenge starts with this in the terminal:
+```
+Bomb is 64 in size and 'ret' is the ending command to fire, also this is not valorant...
+Plant the spike:
+```
 <br>
 The logic below can be found on the main function of the source code:<br>
-<img width="581" height="333" alt="image" src="https://github.com/user-attachments/assets/42ea0b92-c4cf-4fbb-99de-e06df2a6d467" />
+
+```c
+if (buf[64] == 'r' && buf[65] == 'e' && buf[66] == 't') {
+        printf("All right!\nHere is your flag: ");
+        get_flag();
+    } else {
+        printf("Try again!\n");
+    }
+```
 <br>
 Taking into account that this is a c source code, accessing array elements do not undergo bounds-checking. Meaning that even though the buffer is only 64 in size, 
 it is possible to create a string beyond 64 characters. The flag will be outputted as long as r', 'e' and 't', are in indeces 64, 65, and 66, respectively. This can be done by 
-inputting random characters for the first 64 bytes and then input 'r', 'e' and 't'.<br>
-<img width="726" height="71" alt="image" src="https://github.com/user-attachments/assets/0b3f8cb9-42c2-4b2a-aeed-05a8ffb960af" />
+inputting random characters for the first 64 bytes and then input 'r', 'e' and 't'.<br><br>
+
+```
+Bomb is 64 in size and 'ret' is the ending command to fire, also this is not valorant...
+Plant the spike: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAret
+All right!
+Here is your flag: CITU{k4tipwn4n_0v3rfl0w_b0mb_4ctiv4t3d_BO000000M!!}
+'''
