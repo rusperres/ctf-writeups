@@ -111,7 +111,7 @@ def gen_key(k):
     return sha512(str(n).encode()).digest()
 
 def unpad(m):
-    return m[:33]  # known flag length
+    return m[:33]
 
 def decrypt(c, key):
     m = bytes([a ^ b for a, b in zip(c, key)])
